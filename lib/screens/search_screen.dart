@@ -7,8 +7,9 @@ import '../providers/book_search_provider.dart';
 import '../widgets/text_widget_home.dart';
 import 'book_detail_screen.dart';
 
+// A screen that allows users to search for books.
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({Key? key}) : super(key: key);
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -16,16 +17,15 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   FocusNode _focusNode = FocusNode();
+
   @override
   void initState() {
-    // TODO: implement initState
     _focusNode = FocusNode();
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _focusNode.dispose();
     super.dispose();
   }
@@ -121,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                           .thumbnailLinks?[
                                                       "smallThumbnail"] ??
                                                   'https://www.service95.com/wp-content/themes/service95-new/assets/images/placeholder-image2.png',
-                                              fit: BoxFit.cover,
+                                              // fit: BoxFit.cover,
                                             ),
                                           ),
                                         ),
@@ -134,11 +134,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                                 text: currentBook
                                                     .volumeInfo.title!,
                                                 weight: FontWeight.bold,
+                                                fsize: 18,
                                               ),
                                               const SizedBox(height: 5),
                                               TextWidget(
                                                 text: currentBook
                                                     .volumeInfo.authors!,
+                                                fsize: 16,
                                               ),
                                               const SizedBox(height: 5),
                                               TextWidget(
@@ -146,11 +148,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                                         .saleInfo!.isEbook!)
                                                     ? "eBook   ${currentBook.volumeInfo.rating} ★"
                                                     : "Book   ${currentBook.volumeInfo.rating} ★",
+                                                fsize: 14,
                                               ),
                                               const SizedBox(height: 5),
                                               TextWidget(
                                                 text: currentBook
                                                     .saleInfo!.saleability!,
+                                                fsize: 12,
                                               ),
                                             ],
                                           ),

@@ -4,8 +4,7 @@ class SaleInfo {
   bool? isEbook;
   String? buyLink;
 
-  // Add other properties as needed
-
+  // Represents the sale information of a book.
   SaleInfo({
     this.country,
     this.saleability,
@@ -13,10 +12,11 @@ class SaleInfo {
     this.buyLink,
   });
 
+  // Creates a [SaleInfo] object from a JSON [map].
   factory SaleInfo.fromMap(Map<String, dynamic> map) {
     return SaleInfo(
-      country: map[
-          "country"], // Assuming 'authors' is a List<String> in the API response
+      // 'authors' is a List<String> in the API response
+      country: map["country"],
       saleability: map["saleability"],
       isEbook: map["isEbook"],
       buyLink: map["buyLink"],

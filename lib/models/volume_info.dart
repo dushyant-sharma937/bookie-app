@@ -11,8 +11,7 @@ class VolumeInfo {
   Map<String, String>? thumbnailLinks;
   Map<String, String>? imageLinks;
 
-  // Add other properties as needed
-
+  // Represents the volume information of a book.
   VolumeInfo({
     this.title,
     this.authors,
@@ -27,6 +26,7 @@ class VolumeInfo {
     this.imageLinks,
   });
 
+  // Creates a [VolumeInfo] object from a JSON [map].
   factory VolumeInfo.fromMap(Map<String, dynamic> map) {
     return VolumeInfo(
       title: map["title"],
@@ -38,8 +38,8 @@ class VolumeInfo {
       ratingsCount: map["ratingsCount"].toString(),
       pageCount: map["pageCount"].toString(),
       language: map["language"],
-      thumbnailLinks: Map<String, String>.from(map["imageLinks"]),
-      imageLinks: Map<String, String>.from(map["imageLinks"]),
+      thumbnailLinks: Map<String, String>.from(map["thumbnailLinks"] ?? {}),
+      imageLinks: Map<String, String>.from(map["imageLinks"] ?? {}),
       // Map other properties as needed
     );
   }

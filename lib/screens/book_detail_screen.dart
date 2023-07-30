@@ -10,12 +10,16 @@ import '../widgets/container_about_section_detail.dart';
 import '../widgets/container_main_detail.dart';
 import '../widgets/container_review_tray.dart';
 
+/// A screen that displays detailed information about a book.
 class BookDetailScreen extends StatelessWidget {
-  Book currentBook;
-  BookDetailScreen({super.key, required this.currentBook});
+  final Book currentBook;
 
+  BookDetailScreen({Key? key, required this.currentBook}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    String buyLink = currentBook.saleInfo?.buyLink ?? '';
+    // Remove the "&source=gbs_api" part from the buyLink if it exists
+    buyLink = buyLink.replaceAll('&source=gbs_api', '');
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -42,7 +46,7 @@ class BookDetailScreen extends StatelessWidget {
             },
             onSelected: (value) {
               if (value == 0) {
-                // add share button code
+                // Add share button code here
                 print("Share button is tapped");
               }
             },
@@ -62,7 +66,7 @@ class BookDetailScreen extends StatelessWidget {
                   const CustomSpacer(),
                   ContainerReviewTray(currentBook: currentBook),
                   const CustomSpacer(),
-                  GetButton(currentBook: currentBook),
+                  GetButton(currentBook: currentBook, buyLink: buyLink),
                   const Divider(color: Colors.grey, thickness: 2),
                   ContainerAboutSection(currentBook: currentBook),
                   const Divider(color: Colors.grey, thickness: 2),
@@ -77,13 +81,13 @@ class BookDetailScreen extends StatelessWidget {
   }
 }
 
+// A button that allows users to get or buy a book.
 class GetButton extends StatelessWidget {
-  const GetButton({
-    super.key,
-    required this.currentBook,
-  });
-
   final Book currentBook;
+  final String buyLink;
+
+  const GetButton({Key? key, required this.currentBook, required this.buyLink})
+      : super(key: key);
 
   void launchURL(String url) async {
     Uri? uri = Uri.tryParse(url);
@@ -99,8 +103,9 @@ class GetButton extends StatelessWidget {
     return Center(
       child: MaterialButton(
         onPressed: () {
-          if (currentBook.accessInfo?.downloadLink != null) {
-            launchURL(currentBook.accessInfo!.downloadLink!);
+          if (buyLink.isNotEmpty) {
+            final Uri uri = Uri.parse(buyLink);
+            launchUrl(uri);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("The book is not available for free!"),
@@ -111,9 +116,10 @@ class GetButton extends StatelessWidget {
         color: Colors.blue,
         minWidth: MediaQuery.of(context).size.width * 0.9,
         child: TextWidget(
-          text: (currentBook.saleInfo!.saleability! == "FREE")
+          text: (currentBook.saleInfo!.saleability == "FREE")
               ? "Get for free"
               : "Buy it",
+          fsize: 18,
           weight: FontWeight.w500,
         ),
       ),
@@ -121,6 +127,7 @@ class GetButton extends StatelessWidget {
   }
 }
 
+// A custom-sized vertical spacer widget.
 class CustomSpacer extends SizedBox {
-  const CustomSpacer({super.key}) : super(height: 5);
+  const CustomSpacer({super.key}) : super(height: 2);
 }

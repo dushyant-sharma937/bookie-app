@@ -9,6 +9,7 @@ class AccessInfo {
     this.webReaderLink,
   });
 
+  // Creates an [AccessInfo] object from a JSON [map].
   factory AccessInfo.fromMap(Map<String, dynamic> map) {
     if (map["pdf"] != null && map["pdf"]["isAvailable"] == true) {
       return AccessInfo(

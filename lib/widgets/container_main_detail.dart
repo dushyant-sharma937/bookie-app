@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../models/book.dart';
 
+// A custom container widget to display main book details.
 class ContainerMain extends StatelessWidget {
   const ContainerMain({
     Key? key,
@@ -19,8 +20,9 @@ class ContainerMain extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Display the book thumbnail image with specific dimensions and padding.
           SizedBox(
-            height: 200,
+            height: 180,
             width: 150,
             child: Padding(
               padding:
@@ -28,7 +30,7 @@ class ContainerMain extends StatelessWidget {
               child: Image.network(
                 currentBook.volumeInfo.thumbnailLinks?["smallThumbnail"] ??
                     'https://www.service95.com/wp-content/themes/service95-new/assets/images/placeholder-image2.png',
-                fit: BoxFit.cover,
+                // fit: BoxFit.cover,
               ),
             ),
           ),
@@ -37,23 +39,33 @@ class ContainerMain extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 8),
+                // Display the book title with specific text styling.
                 TextWidget(
-                  text: currentBook.volumeInfo.title ?? "",
+                  text: currentBook.volumeInfo.title ?? "N/A",
                   weight: FontWeight.w800,
                   fsize: 22,
+                  maxLines: 40,
                 ),
                 const SizedBox(height: 5),
+                // Display the book authors if available, otherwise show an empty string.
                 TextWidget(
-                  text: currentBook.volumeInfo.authors ?? "",
-                  // Display the authors if available, otherwise show an empty string
+                  text: currentBook.volumeInfo.authors ?? "N/A",
                   weight: FontWeight.w500,
+                  maxLines: 40,
+                  fsize: 18,
                 ),
                 const SizedBox(height: 5),
-                TextWidget(text: currentBook.volumeInfo.publisher ?? ""),
+                // Display the book publisher.
+                TextWidget(
+                  text: currentBook.volumeInfo.publisher ?? "N/A",
+                  fsize: 16,
+                ),
                 const SizedBox(height: 5),
+                // Display the book release date with a prefix.
                 TextWidget(
                   text:
                       "Released on ${currentBook.volumeInfo.publishedDate ?? ""}",
+                  fsize: 14,
                 ),
                 const SizedBox(height: 5),
               ],

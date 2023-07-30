@@ -4,6 +4,7 @@ import '../models/book.dart';
 import '../models/book_search_result.dart';
 import '../services/book_api_service.dart';
 
+// A provider class that handles book search operations.
 class BookSearchProvider extends ChangeNotifier {
   final _bookService = BookService();
   BookSearchResult _searchResult = BookSearchResult(books: []);
@@ -11,11 +12,19 @@ class BookSearchProvider extends ChangeNotifier {
   bool _hasError = false;
   String _errorMessage = '';
 
+  // The current search result containing a list of books.
   BookSearchResult get searchResult => _searchResult;
+
+  // Indicates whether the search operation is in progress.
   bool get isLoading => _isLoading;
+
+  // Indicates whether an error occurred during the search operation.
   bool get hasError => _hasError;
+
+  // The error message, if any, encountered during the search operation.
   String get errorMessage => _errorMessage;
 
+  // Searches for books based on the provided [query].
   Future<void> searchBooks(String query) async {
     if (query.isNotEmpty) {
       _isLoading = true;
@@ -49,6 +58,7 @@ class BookSearchProvider extends ChangeNotifier {
     }
   }
 
+  // Resets the search result and related state variables.
   void resetSearch() {
     _searchResult = BookSearchResult(books: []);
     _isLoading = false;

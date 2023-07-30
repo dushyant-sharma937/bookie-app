@@ -3,8 +3,9 @@ import 'package:bookie/widgets/text_widget_home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// The home screen of the Bookie app.
 class AppHomeScreen extends StatelessWidget {
-  const AppHomeScreen({super.key});
+  const AppHomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +13,17 @@ class AppHomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Bookie"),
         actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    fullscreenDialog: true,
+                    builder: (context) => const SearchScreen(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.search)),
           PopupMenuButton(
             itemBuilder: (context) {
               return [
@@ -45,10 +57,12 @@ class AppHomeScreen extends StatelessWidget {
               MaterialButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          fullscreenDialog: true,
-                          builder: (context) => const SearchScreen()));
+                    context,
+                    CupertinoPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => const SearchScreen(),
+                    ),
+                  );
                 },
                 minWidth: MediaQuery.of(context).size.width * 0.6,
                 padding: const EdgeInsets.all(12.0),
@@ -57,7 +71,7 @@ class AppHomeScreen extends StatelessWidget {
                   "Search",
                   style: TextStyle(fontSize: 18),
                 ),
-              )
+              ),
             ],
           ),
         ),
