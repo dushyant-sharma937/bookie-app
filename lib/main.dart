@@ -1,4 +1,5 @@
 import 'package:bookie/providers/book_search_provider.dart';
+import 'package:bookie/screens/app_home_screen.dart';
 import 'package:bookie/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -50,7 +51,12 @@ class Bookie extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: const SplashScreen(), // The initial screen of the app.
+        initialRoute: '/splash',
+        routes: {
+          '/splash': (context) => const SplashScreen(),
+          '/home': (context) =>
+              const AppHomeScreen(), // Replace 'HomeScreen' with your home screen widget
+        }, // The initial screen of the app.
       ),
     );
   }
