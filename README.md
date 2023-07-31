@@ -1,6 +1,6 @@
 # Bookie App - Books Search Application
 
-![Bookie App Logo](https://drive.google.com/file/d/13QylpQchqAX9uZVYX8bIWawkOHtYsr9P/view?usp=sharing)
+<img src="https://github.com/dushyant-sharma937/bookie-app/blob/main/assets/images/5836.jpg?raw=true" alt="Bookie App Logo" width="150" height="150" />
 
 Bookie App is a Flutter-based mobile application that allows users to search for books using the Google Books API. With Bookie App, users can discover both paid and unpaid books, view ratings, author information, and all other essential details about each book.
 
@@ -18,9 +18,21 @@ Bookie App is a Flutter-based mobile application that allows users to search for
 You can try out the live demo of Bookie App at: [https://example.com/bookie-app-demo](https://drive.google.com/file/d/1NmEwlA8PmSg50ndWc7rk6IfRNPD_z4Hr/view?usp=sharing)
 
 ## Screenshots
+<table>
+  <tr>
+    <td>
+      <img src="https://github.com/dushyant-sharma937/bookie-app/blob/main/assets/images/Working%20ss1.jpg?raw=true" alt="Bookie App Logo" width="160" height="320" />
+    </td>
+     <td>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td>
+    <td>
+      <img src="https://github.com/dushyant-sharma937/bookie-app/blob/main/assets/images/Working%20ss2.jpg?raw=true" alt="Bookie App Logo" width="160" height="320" />
+    </td>
+  </tr>
+</table>
 
-![Bookie App Screenshot 1](https://drive.google.com/file/d/1OxW791Yb4QxX78CJcbw8qkL6an4VspnQ/view?usp=sharing)
-![Bookie App Screenshot 2](https://drive.google.com/file/d/19mP5iX-1N2gw-JBMTzZNR_vmPtPWUare/view?usp=sharing)
+
 
 ## Getting Started
 
