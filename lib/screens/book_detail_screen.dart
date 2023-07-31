@@ -2,23 +2,58 @@
 
 import 'package:bookie/widgets/text_widget_home.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/book.dart';
+import '../providers/book_provider.dart';
 import '../widgets/container_others_detail.dart';
 import '../widgets/container_about_section_detail.dart';
 import '../widgets/container_main_detail.dart';
 import '../widgets/container_review_tray.dart';
 
 /// A screen that displays detailed information about a book.
-class BookDetailScreen extends StatelessWidget {
+class BookDetailScreen extends StatefulWidget {
   final Book currentBook;
 
   const BookDetailScreen({Key? key, required this.currentBook})
       : super(key: key);
+
+  @override
+  State<BookDetailScreen> createState() => _BookDetailScreenState();
+}
+
+class _BookDetailScreenState extends State<BookDetailScreen> {
+  bool _isBookmarked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isBookmarked = _isBookmarkedBook();
+  }
+
+  bool _isBookmarkedBook() {
+    final bookProvider = Provider.of<BookProvider>(context, listen: false);
+    return bookProvider
+        .isBookmarked(widget.currentBook.volumeInfo.id.toString());
+  }
+
+  void _toggleBookmark() {
+    final bookProvider = Provider.of<BookProvider>(context, listen: false);
+    if (_isBookmarked) {
+      bookProvider
+          .removeBookmarkedBook(widget.currentBook.volumeInfo.id.toString());
+    } else {
+      bookProvider.addBookmarkedBook(widget.currentBook);
+    }
+    setState(() {
+      _isBookmarked = !_isBookmarked;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    String buyLink = currentBook.saleInfo?.buyLink ?? '';
+    String buyLink = widget.currentBook.saleInfo?.buyLink ?? '';
     // Remove the "&source=gbs_api" part from the buyLink if it exists
     buyLink = buyLink.replaceAll('&source=gbs_api', '');
     return Scaffold(
@@ -32,8 +67,10 @@ class BookDetailScreen extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.bookmark_add_outlined),
+            onPressed: _toggleBookmark,
+            icon: _isBookmarked
+                ? const Icon(Icons.bookmark)
+                : const Icon(Icons.bookmark_border),
           ),
           const SizedBox(width: 8),
           PopupMenuButton(
@@ -63,15 +100,15 @@ class BookDetailScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ContainerMain(currentBook: currentBook),
+                  ContainerMain(currentBook: widget.currentBook),
                   const CustomSpacer(),
-                  ContainerReviewTray(currentBook: currentBook),
+                  ContainerReviewTray(currentBook: widget.currentBook),
                   const CustomSpacer(),
-                  GetButton(currentBook: currentBook, buyLink: buyLink),
+                  GetButton(currentBook: widget.currentBook, buyLink: buyLink),
                   const Divider(color: Colors.grey, thickness: 2),
-                  ContainerAboutSection(currentBook: currentBook),
+                  ContainerAboutSection(currentBook: widget.currentBook),
                   const Divider(color: Colors.grey, thickness: 2),
-                  ContainerOthers(currentBook: currentBook)
+                  ContainerOthers(currentBook: widget.currentBook)
                 ],
               ),
             ),

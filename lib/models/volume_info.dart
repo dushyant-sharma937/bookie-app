@@ -1,4 +1,5 @@
 class VolumeInfo {
+  String? id;
   String? title;
   String? authors;
   String? publisher;
@@ -13,6 +14,7 @@ class VolumeInfo {
 
   // Represents the volume information of a book.
   VolumeInfo({
+    required this.id,
     this.title,
     this.authors,
     this.publisher,
@@ -29,6 +31,7 @@ class VolumeInfo {
   // Creates a [VolumeInfo] object from a JSON [map].
   factory VolumeInfo.fromMap(Map<String, dynamic> map) {
     return VolumeInfo(
+      id: map["id"],
       title: map["title"],
       authors: map["authors"]?.join(", "),
       publisher: map["publisher"],

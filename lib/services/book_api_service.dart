@@ -29,6 +29,7 @@ class BookService {
         final Map<String, dynamic> bookDataSaleInfo = item['saleInfo'];
         final Book book = Book(
           volumeInfo: VolumeInfo(
+            id: bookDataVolumeInfo['id'],
             title: bookDataVolumeInfo['title'],
             authors: bookDataVolumeInfo['authors'] != null
                 ? List<String>.from(bookDataVolumeInfo['authors']).toString()
@@ -72,6 +73,7 @@ class BookService {
           : null;
       final Book book = Book(
         volumeInfo: VolumeInfo(
+          id: data['volumeInfo']['id'],
           title: data['volumeInfo']['title'],
           authors:
               authorsList != null ? authorsList.join(", ") : "Unknown Author",

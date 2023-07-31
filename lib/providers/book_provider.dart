@@ -10,8 +10,8 @@ class BookProvider with ChangeNotifier {
   }
   final List<String> _favoriteBookIds = [
     "E-OLEAAAQBAJ",
-    "-Wd9EAAAQBAJ",
     "buc0AAAAMAAJ",
+    "-Wd9EAAAQBAJ",
     "jfSn2RJZI9EC",
     "Ayk3EAAAQBAJ",
     "n7JfDwAAQBAJ",
@@ -35,11 +35,36 @@ class BookProvider with ChangeNotifier {
   List<Book> _favoriteBooks = [];
   List<Book> get favoriteBooks => _favoriteBooks;
 
+  bool isBookmarked(String bookId) {
+    return _favoriteBookIds.contains(bookId);
+  }
+
+  void addBookmarkedBook(Book book) {
+    if (!isBookmarked(book.volumeInfo.id.toString())) {
+      _favoriteBookIds.add(book.volumeInfo.id.toString());
+      _favoriteBooks.insert(0, book);
+      notifyListeners();
+    }
+  }
+
+  void removeBookmarkedBook(String bookId) {
+    if (isBookmarked(bookId)) {
+      _favoriteBookIds.remove(bookId);
+      _favoriteBooks.removeWhere((book) => book.volumeInfo.id == bookId);
+      notifyListeners();
+    }
+  }
+
   Future<void> fetchFavoriteBooks() async {
     List<Book> favoriteBooks = [];
     for (String bookId in _favoriteBookIds) {
-      final book = await BookService().fetchBooksByIds(bookId);
-      favoriteBooks.add(book);
+      try {
+        final book = await BookService().fetchBooksByIds(bookId);
+        favoriteBooks.add(book);
+      } catch (e) {
+        // Handle the error if a book fails to load
+        print('Error loading book with ID $bookId: $e');
+      }
     }
     _favoriteBooks = favoriteBooks;
     isLoading = false;
