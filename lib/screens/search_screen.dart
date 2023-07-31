@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../models/book.dart';
 import '../providers/book_search_provider.dart';
-import '../widgets/text_widget_home.dart';
+import '../widgets/book_overview_tile.dart';
 import 'book_detail_screen.dart';
 
 // A screen that allows users to search for books.
@@ -48,10 +49,14 @@ class _SearchScreenState extends State<SearchScreen> {
                 padding: const EdgeInsets.all(8),
                 child: TextField(
                   focusNode: _focusNode,
+                  cursorColor: Colors.white,
                   autofocus: true,
                   decoration: const InputDecoration(
                     hintText: "Search",
-                    icon: Icon(Icons.search),
+                    icon: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
                   ),
                   onSubmitted: (value) {
                     Provider.of<BookSearchProvider>(context, listen: false)
@@ -63,7 +68,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: Consumer<BookSearchProvider>(
                   builder: (context, bookSearchProvider, _) {
                     if (bookSearchProvider.isLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return Center(
+                          child: LoadingAnimationWidget.newtonCradle(
+                              color: Colors.white, size: 150));
                     } else if (bookSearchProvider.hasError) {
                       return Text('Error: ${bookSearchProvider.errorMessage}');
                     } else {
@@ -94,75 +101,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                   );
                                 },
                                 splashColor: Colors.grey,
-                                child: Container(
-                                  margin: const EdgeInsets.all(8),
-                                  padding: const EdgeInsets.all(4),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 2,
-                                      vertical: 1,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 150,
-                                          height: 200,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                              right: 8,
-                                              left: 4,
-                                            ),
-                                            child: Image.network(
-                                              currentBook.volumeInfo
-                                                          .thumbnailLinks?[
-                                                      "smallThumbnail"] ??
-                                                  'https://www.service95.com/wp-content/themes/service95-new/assets/images/placeholder-image2.png',
-                                              // fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              TextWidget(
-                                                text: currentBook
-                                                    .volumeInfo.title!,
-                                                weight: FontWeight.bold,
-                                                fsize: 18,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              TextWidget(
-                                                text: currentBook
-                                                    .volumeInfo.authors!,
-                                                fsize: 16,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              TextWidget(
-                                                text: (currentBook
-                                                        .saleInfo!.isEbook!)
-                                                    ? "eBook   ${currentBook.volumeInfo.rating} ★"
-                                                    : "Book   ${currentBook.volumeInfo.rating} ★",
-                                                fsize: 14,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              TextWidget(
-                                                text: currentBook
-                                                    .saleInfo!.saleability!,
-                                                fsize: 12,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                child:
+                                    BookOverviewTile(currentBook: currentBook),
                               );
                             },
                           ),

@@ -1,4 +1,3 @@
-import 'package:bookie/screens/app_home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,11 +24,11 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _imageAnimation = Tween(begin: -300.0, end: 0.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInCirc),
+      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
     );
 
     _textAnimation = Tween(begin: 300.0, end: 0.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOutCirc),
+      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
     );
 
     _controller.forward();
@@ -58,10 +57,11 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Image.asset(
                     'assets/images/5836.jpg',
                     width: 240,
-                    height: 240,
+                    height: 170,
+                    fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 5),
                 Transform.translate(
                   offset: Offset(_textAnimation.value, 0),
                   child: const Text(

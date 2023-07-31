@@ -14,7 +14,8 @@ import '../widgets/container_review_tray.dart';
 class BookDetailScreen extends StatelessWidget {
   final Book currentBook;
 
-  BookDetailScreen({Key? key, required this.currentBook}) : super(key: key);
+  const BookDetailScreen({Key? key, required this.currentBook})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     String buyLink = currentBook.saleInfo?.buyLink ?? '';

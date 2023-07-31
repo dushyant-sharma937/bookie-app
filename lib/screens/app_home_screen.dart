@@ -1,14 +1,25 @@
+import 'package:bookie/providers/book_provider.dart';
 import 'package:bookie/screens/search_screen.dart';
-import 'package:bookie/widgets/text_widget_home.dart';
+import 'package:bookie/widgets/book_overview_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
+
+import 'book_detail_screen.dart';
 
 // The home screen of the Bookie app.
-class AppHomeScreen extends StatelessWidget {
+class AppHomeScreen extends StatefulWidget {
   const AppHomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<AppHomeScreen> createState() => _AppHomeScreenState();
+}
+
+class _AppHomeScreenState extends State<AppHomeScreen> {
+  @override
   Widget build(BuildContext context) {
+    BookProvider bookProvider = Provider.of<BookProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Bookie"),
@@ -42,40 +53,47 @@ class AppHomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TextWidget(
-                text: "Search your favorite book!",
-                fsize: 22,
-                weight: FontWeight.w600,
-              ),
-              const SizedBox(height: 5),
-              MaterialButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => const SearchScreen(),
+      body: (bookProvider.isLoading == false)
+          ? SafeArea(
+              child:
+                  Consumer<BookProvider>(builder: (context, bookProvider, _) {
+                final favoriteBooks = bookProvider.favoriteBooks;
+                return ListView(
+                  children: [
+                    GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        mainAxisExtent: 240,
+                      ),
+                      itemCount: favoriteBooks.length,
+                      itemBuilder: (context, index) {
+                        final currentBook = favoriteBooks[index];
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => BookDetailScreen(
+                                  currentBook: currentBook,
+                                ),
+                              ),
+                            );
+                          },
+                          splashColor: Colors.grey,
+                          child: BookOverviewTile(currentBook: currentBook),
+                        );
+                      },
                     ),
-                  );
-                },
-                minWidth: MediaQuery.of(context).size.width * 0.6,
-                padding: const EdgeInsets.all(12.0),
-                color: Colors.blue,
-                child: const Text(
-                  "Search",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+                  ],
+                );
+              }),
+            )
+          : Center(
+              child: LoadingAnimationWidget.newtonCradle(
+                  color: Colors.white, size: 150)),
     );
   }
 }

@@ -10,8 +10,6 @@ import '../models/volume_info.dart';
 class BookService {
   static const String _baseUrl = 'https://www.googleapis.com/books/v1/volumes';
   // Your API key for accessing the Google Books API.
-  // To use the 'dotenv' package to load the API key, set it in a '.env' file.
-  // Example: api_key=YOUR_API_KEY
   static final String _apiKey = dotenv.env['api_key']!;
 
   // Fetches a list of books from the Google Books API based on the provided query.
@@ -62,6 +60,45 @@ class BookService {
       return books;
     } else {
       throw Exception('Failed to load books');
+    }
+  }
+
+  Future<Book> fetchBooksByIds(String id) async {
+    final response = await http.get(Uri.parse('$_baseUrl/$id'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List<String>? authorsList = data['volumeInfo']['authors'] != null
+          ? List<String>.from(data['volumeInfo']['authors'])
+          : null;
+      final Book book = Book(
+        volumeInfo: VolumeInfo(
+          title: data['volumeInfo']['title'],
+          authors:
+              authorsList != null ? authorsList.join(", ") : "Unknown Author",
+          thumbnailLinks: data['volumeInfo']['imageLinks'] != null
+              ? Map<String, String>.from(data['volumeInfo']['imageLinks'])
+              : {},
+          rating: data['volumeInfo']['averageRating']?.toString() ?? '0.0',
+          description: data['volumeInfo']['description']?.toString() ??
+              "No description available :(",
+          language: data['volumeInfo']['language']?.toString() ?? "N/A",
+          pageCount: data['volumeInfo']['pageCount']?.toString() ?? "N/A",
+          publishedDate:
+              data['volumeInfo']['publishedDate']?.toString() ?? "15-01-2015",
+          publisher: data['volumeInfo']['publisher']?.toString() ??
+              "Unknown publisher",
+          ratingsCount: data['volumeInfo']['ratingsCount']?.toString() ?? "0",
+        ),
+        saleInfo: SaleInfo(
+          buyLink: data['saleInfo']['buyLink']?.toString() ?? "",
+          country: data['saleInfo']['country']?.toString() ?? "",
+          isEbook: data['saleInfo']['isEbook'] ?? false,
+          saleability: data['saleInfo']['saleability']?.toString() ?? "",
+        ),
+      );
+      return book;
+    } else {
+      throw Exception('Failed to load book');
     }
   }
 }

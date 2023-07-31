@@ -1,3 +1,4 @@
+import 'package:bookie/providers/book_provider.dart';
 import 'package:bookie/providers/book_search_provider.dart';
 import 'package:bookie/screens/app_home_screen.dart';
 import 'package:bookie/screens/splash_screen.dart';
@@ -28,6 +29,10 @@ class Bookie extends StatelessWidget {
         // Provides the BookSearchProvider to the app as a ChangeNotifier.
         ChangeNotifierProvider(
           create: (context) => BookSearchProvider(),
+        ),
+        // Loads the data of a single book.
+        ChangeNotifierProvider(
+          create: (context) => BookProvider(),
         ),
       ],
       child: MaterialApp(
